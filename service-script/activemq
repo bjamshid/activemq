@@ -1,0 +1,48 @@
+#!/bin/bash
+#/etc/init.d/activemq
+DAEMON_PATH=/home/b/broker-iot/apache-activemq-5.15.8/bin/activemq
+DAEMON_NAME=activemq
+# Check that networking is up.
+# [ ${NETWORKING} = "no" ] && exit 0
+
+PATH=$PATH:$DAEMON_PATH
+
+# See how we were called.
+case "$1" in
+  start)
+        # Start daemon.
+        pid=`ps ax | grep -i 'activemq' | grep -v grep | awk '{print $1}'`
+        if [ -n "$pid" ]
+          then
+            echo "*** ActiveMQ is already running ***"
+        else
+          echo "*** Starting $DAEMON_NAME ***"
+          $DAEMON_PATH start
+		  echo " *** $DAEMON_NAME is now running ***"
+        fi
+        ;;
+  stop)
+        echo "*** Shutting down $DAEMON_NAME ***"
+        $DAEMON_PATH stop
+        ;;
+  restart)
+        $0 stop
+        sleep 2
+		echo "*** Attempting to restart $DAEMON_NAME ... ***"
+        $0 start
+        ;;
+  status)
+        pid=`ps ax | grep -i 'activemq' | grep -v grep | awk '{print $1}'`
+        if [ -n "$pid" ]
+          then
+          echo "*** $DAEMON_NAME is running as PID: $pid ***"
+        else
+          echo " *** $DAEMON_NAME is not running ***"
+        fi
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+exit 0
