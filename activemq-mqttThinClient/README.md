@@ -17,4 +17,4 @@ mosquitto_sub -h <your_broker_ip> -t test_topic
 ### in another terminal:
 mosquitto_pub -h <your_broker_ip> -t test_topic -m "hello there"
 
-## note: if you are running the broker in a VM and your thin clients out of VM, open/forward port 1883.
+## note: if you are running the broker in a VM and your thin client is not on the same VM, open/forward port 1883.
